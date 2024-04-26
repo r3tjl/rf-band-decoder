@@ -194,6 +194,7 @@ void SetOuts() {
 
 void CheckPTT() {
 	if ((LL_GPIO_IsInputPinSet(PTT_IN_GPIO_Port, PTT_IN_Pin) == 0)&&(flag_ptt)) {
+		LL_mDelay(10);
 		LL_GPIO_SetOutputPin(PTT_OUT_GPIO_Port, PTT_OUT_Pin);
 	} else {
 		LL_GPIO_ResetOutputPin(PTT_OUT_GPIO_Port, PTT_OUT_Pin);
