@@ -41,7 +41,7 @@ Maximum input frequency: 32MHz
 
 Maximum RF input: 50W
 
-Measurement time: – 4ms
+Measurement time: ~4ms
 
 Number of 50V/100mA outputs: 8
 
