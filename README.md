@@ -16,23 +16,38 @@ This board provides automatic band switching capabilities for LPF and antenna sw
 ### Board band plan 
 
 B1 — 160
+
 B2 — 80
+
 B3 — 40
+
 B4 — 30
+
 B5 — 20
+
 B6 — 17
+
 B7 — 15
+
 B8 — 12/11/10
 
 ### Technical specification
 
 Power supply: 6.5-15V, 10mA
+
 Input RF impedance: >1 kΩ
+
 Maximum input frequency: 32MHz
+
 Maximum RF input: 50W
+
 Measurement time: – 4ms
+
 Number of 50V/100mA outputs: 8
+
 Board sizes 60×50 mm
+
+
 
 ------
 
