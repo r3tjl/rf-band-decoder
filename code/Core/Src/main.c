@@ -22,12 +22,19 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 //#include "string.h"
+#define samples 10
+
 uint32_t freq = 0;
+uint32_t freq_old1 = 0;
+uint32_t freq_old2 = 0;
+uint32_t freq_old3 = 0;
 uint32_t current_freq = 0;
 int count = 0;
 int flag_band = 0;
 int previous_flag_band = 0;
 int flag_ptt = 0;
+
+int raw[samples];
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,21 +109,38 @@ void TestOuts(){
 	ResetAllOuts();
 }
 
-
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+	//static int z=0;
 	if ((htim == &htim16)&&(LL_GPIO_IsInputPinSet(PTT_IN_GPIO_Port, PTT_IN_Pin) == 0)) {
 		HAL_TIM_PWM_Stop(&htim16, TIM_CHANNEL_1);
 		uint16_t count_main = __HAL_TIM_GET_COUNTER(&htim1);
 		uint16_t count_secondary = __HAL_TIM_GET_COUNTER(&htim3);
 		uint16_t arr = __HAL_TIM_GET_AUTORELOAD(&htim1);
 		uint32_t freq_raw = count_main + (count_secondary * (arr + 1));
-		current_freq = freq_raw>>2;
+		current_freq = (freq_raw>>2)/100;
 		if (current_freq >= 1) count++; else count = 0;
-		if (count == 3) {
-			freq = current_freq;
-			count=0;
+		if (count == 1){
+			if (current_freq > freq_old1) {
+				freq_old1 = current_freq;
+			}
 		}
-		//LL_GPIO_TogglePin(BAND1_GPIO_Port, BAND1_Pin);
+		if (count == 2){
+					if (current_freq > freq_old2) {
+						freq_old2 = current_freq;
+					}
+				}
+		if (count == 3){
+			count = 0;
+					if (current_freq > freq_old3) {
+						freq_old3 = current_freq;
+
+					}
+				}
+		if ((freq_old1==freq_old2)&&(freq_old2==freq_old3)) {
+			freq = freq_old1;
+		}
+		if (current_freq<freq_old1) freq_old1=freq_old2=freq_old3=0;
+
 		__HAL_TIM_SET_COUNTER(&htim1, 0x0000);
 		__HAL_TIM_SET_COUNTER(&htim3, 0x0000);
 		 HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
@@ -124,14 +148,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 }
 
 void SetBand(){
-	if ((freq >= 900)&&(freq <= 2900)) {flag_band=1; freq = 0;}
-	if ((freq >= 2950)&&(freq <= 4500)) {flag_band=2; freq = 0;}
-	if ((freq >= 6500)&&(freq <= 7500)) {flag_band=3; freq = 0;}
-	if ((freq >= 9000)&&(freq <= 11000)) {flag_band=4; freq = 0;}
-	if ((freq >= 13000)&&(freq <=15000)) {flag_band=5; freq = 0;}
-	if ((freq >= 17000)&&(freq <= 19000)) {flag_band=6; freq = 0;}
-	if ((freq >= 20000)&&(freq <= 22000)) {flag_band=7; freq = 0;}
-	if ((freq >= 23000)&&(freq <= 31000)) {flag_band=8; freq = 0;}
+	if ((freq >= 9)&&(freq <= 29)) {flag_band=1; freq = 0;}
+	if ((freq >= 30)&&(freq <= 45)) {flag_band=2; freq = 0;}
+	if ((freq >= 65)&&(freq <= 75)) {flag_band=3; freq = 0;}
+	if ((freq >= 90)&&(freq <= 110)) {flag_band=4; freq = 0;}
+	if ((freq >= 130)&&(freq <=150)) {flag_band=5; freq = 0;}
+	if ((freq >= 170)&&(freq <= 190)) {flag_band=6; freq = 0;}
+	if ((freq >= 200)&&(freq <= 220)) {flag_band=7; freq = 0;}
+	if ((freq >= 230)&&(freq <= 310)) {flag_band=8; freq = 0;}
 	if (previous_flag_band == flag_band) flag_ptt = 1; else flag_ptt  = 0;
 }
 
@@ -277,10 +301,12 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
+  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = RCC_PLLM_DIV1;
   RCC_OscInitStruct.PLL.PLLN = 8;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
@@ -436,7 +462,7 @@ static void MX_TIM16_Init(void)
   htim16.Instance = TIM16;
   htim16.Init.Prescaler = 63999;
   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim16.Init.Period = 5;
+  htim16.Init.Period = 3;
   htim16.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim16.Init.RepetitionCounter = 0;
   htim16.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
