@@ -75,6 +75,22 @@ static void MX_TIM17_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void SetBand() {
+	if ((freq >= 9)||(freq <= 310)){
+		if ((freq >= 9)&&(freq <= 29)) {flag_band=1; freq = 0; flag_ptt = 1;}
+		if ((freq >= 30)&&(freq <= 45)) {flag_band=2; freq = 0; flag_ptt = 1;}
+		if ((freq >= 65)&&(freq <= 75)) {flag_band=3; freq = 0; flag_ptt = 1;}
+		if ((freq >= 90)&&(freq <= 110)) {flag_band=4; freq = 0; flag_ptt = 1;}
+		if ((freq >= 130)&&(freq <=150)) {flag_band=5; freq = 0; flag_ptt = 1;}
+		if ((freq >= 170)&&(freq <= 190)) {flag_band=6; freq = 0; flag_ptt = 1;}
+		if ((freq >= 200)&&(freq <= 220)) {flag_band=7; freq = 0; flag_ptt = 1;}
+		if ((freq >= 230)&&(freq <= 310)) {flag_band=8; freq = 0; flag_ptt = 1;}
+		if ((freq >= 52)&&(freq <= 55)){ flag_band = 0; freq = 0; flag_ptt = 0;}
+	}
+	else { flag_band = 0; freq = 0; flag_ptt = 0;}
+
+}
+
 void ResetAllOuts(){
 	LL_GPIO_ResetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
 	LL_GPIO_ResetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
@@ -111,103 +127,83 @@ void TestOuts(){
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	//static int z=0;
-	if ((htim == &htim16)&&(LL_GPIO_IsInputPinSet(PTT_IN_GPIO_Port, PTT_IN_Pin) == 0)) {
+	if ((htim == &htim16)
+			&& (LL_GPIO_IsInputPinSet(PTT_IN_GPIO_Port, PTT_IN_Pin) == 0)) {
 		HAL_TIM_PWM_Stop(&htim16, TIM_CHANNEL_1);
 		uint16_t count_main = __HAL_TIM_GET_COUNTER(&htim1);
 		uint16_t count_secondary = __HAL_TIM_GET_COUNTER(&htim3);
 		uint16_t arr = __HAL_TIM_GET_AUTORELOAD(&htim1);
 		uint32_t freq_raw = count_main + (count_secondary * (arr + 1));
-		current_freq = (freq_raw>>2)/100;
-		if (current_freq >= 1) count++; else count = 0;
-		if (count == 1){
+		current_freq = (freq_raw >> 2) / 100;
+		if (current_freq >= 1)
+			count++;
+		else
+			count = 0;
+		if (count == 1) {
 			if (current_freq > freq_old1) {
 				freq_old1 = current_freq;
 			}
 		}
-		if (count == 2){
-					if (current_freq > freq_old2) {
-						freq_old2 = current_freq;
-					}
-				}
-		if (count == 3){
-			count = 0;
-					if (current_freq > freq_old3) {
-						freq_old3 = current_freq;
-
-					}
-				}
-		if ((freq_old1==freq_old2)&&(freq_old2==freq_old3)) {
-			freq = freq_old1;
+		if (count == 2) {
+			if (current_freq > freq_old2) {
+				freq_old2 = current_freq;
+			}
 		}
-		if (current_freq<freq_old1) freq_old1=freq_old2=freq_old3=0;
+		if (count == 3) {
+			count = 0;
+			if (current_freq > freq_old3) {
+				freq_old3 = current_freq;
+
+			}
+		}
+		if ((freq_old1 == freq_old2) && (freq_old2 == freq_old3)) {
+			freq = freq_old1;
+			SetBand();
+		}
+		if (current_freq < freq_old1)
+			freq_old1 = freq_old2 = freq_old3 = 0;
 
 		__HAL_TIM_SET_COUNTER(&htim1, 0x0000);
 		__HAL_TIM_SET_COUNTER(&htim3, 0x0000);
-		 HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-	}
+		HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+	} else {flag_ptt=0;}
 }
 
-void SetBand(){
-	if ((freq >= 9)&&(freq <= 29)) {flag_band=1; freq = 0;}
-	if ((freq >= 30)&&(freq <= 45)) {flag_band=2; freq = 0;}
-	if ((freq >= 65)&&(freq <= 75)) {flag_band=3; freq = 0;}
-	if ((freq >= 90)&&(freq <= 110)) {flag_band=4; freq = 0;}
-	if ((freq >= 130)&&(freq <=150)) {flag_band=5; freq = 0;}
-	if ((freq >= 170)&&(freq <= 190)) {flag_band=6; freq = 0;}
-	if ((freq >= 200)&&(freq <= 220)) {flag_band=7; freq = 0;}
-	if ((freq >= 230)&&(freq <= 310)) {flag_band=8; freq = 0;}
-	if (previous_flag_band == flag_band) flag_ptt = 1; else flag_ptt  = 0;
-}
+
 
 
 void SetOuts() {
 	if (flag_band == 1) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 2) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 3) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 4) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND4_GPIO_Port, BAND4_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 5) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 6) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 7) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 8) {
-		previous_flag_band = flag_band;
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND8_GPIO_Port, BAND8_Pin);
-		flag_ptt = 1;
 	}
 	if (flag_band == 0) {
 		flag_ptt = 0;
@@ -217,11 +213,13 @@ void SetOuts() {
 }
 
 void CheckPTT() {
+
 	if ((LL_GPIO_IsInputPinSet(PTT_IN_GPIO_Port, PTT_IN_Pin) == 0)&&(flag_ptt)) {
 		LL_mDelay(10);
 		LL_GPIO_SetOutputPin(PTT_OUT_GPIO_Port, PTT_OUT_Pin);
 	} else {
 		LL_GPIO_ResetOutputPin(PTT_OUT_GPIO_Port, PTT_OUT_Pin);
+		flag_ptt  = 0;
 	}
 }
 
@@ -265,7 +263,6 @@ int main(void)
   //TestOuts();
   HAL_TIM_Base_Start_IT(&htim16);
   HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-  //HAL_TIM_Base_Start(&htim16);
   HAL_TIM_Base_Start(&htim1);
   HAL_TIM_Base_Start(&htim3);
 
@@ -275,7 +272,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  SetBand();
+	  //SetBand();
 	  SetOuts();
 	  CheckPTT();
     /* USER CODE END WHILE */
