@@ -173,39 +173,79 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
 
 void SetOuts() {
-	if (flag_band == 1) {
+	if (flag_band == 1) {	//160
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
 	}
-	if (flag_band == 2) {
+	if (flag_band == 2) {	//80
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
 	}
-	if (flag_band == 3) {
+	if (flag_band == 3) {	//40
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
 	}
-	if (flag_band == 4) {
+	if (flag_band == 4) {	//30
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND4_GPIO_Port, BAND4_Pin);
 	}
-	if (flag_band == 5) {
+	if (flag_band == 5) {	//20
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
 	}
-	if (flag_band == 6) {
+	if (flag_band == 6) {	//17
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
 	}
-	if (flag_band == 7) {
+	if (flag_band == 7) {	//15
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
 	}
-	if (flag_band == 8) {
+	if (flag_band == 8) {	//12-11-10
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND8_GPIO_Port, BAND8_Pin);
 	}
-	if (flag_band == 0) {
+	if (flag_band == 0) {	//bypass
+		flag_ptt = 0;
+		ResetAllOuts();
+	}
+
+}
+
+void SetOutABCD() {
+	if (flag_band == 1) {	//160
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
+	}
+	if (flag_band == 2) {	//80
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
+	}
+	if (flag_band == 3) {	//40
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
+	}
+	if (flag_band == 4) {	//30
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND4_GPIO_Port, BAND4_Pin);
+	}
+	if (flag_band == 5) {	//20
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
+	}
+	if (flag_band == 6) {	//17
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
+	}
+	if (flag_band == 7) {	//15
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
+	}
+	if (flag_band == 8) {	//12-11-10
+		ResetAllOuts();
+		LL_GPIO_SetOutputPin(BAND8_GPIO_Port, BAND8_Pin);
+	}
+	if (flag_band == 0) {	//bypass
 		flag_ptt = 0;
 		ResetAllOuts();
 	}
