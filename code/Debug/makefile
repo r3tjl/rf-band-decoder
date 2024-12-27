@@ -66,8 +66,8 @@ all: main-build
 main-build: rf_banddecoder_g030.elf secondary-outputs
 
 # Tool invocations
-rf_banddecoder_g030.elf rf_banddecoder_g030.map: $(OBJS) $(USER_OBJS) C:\Users\Влад\Downloads\rf-band-decoder-main(1)\rf-band-decoder-main\code\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "rf_banddecoder_g030.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\Влад\Downloads\rf-band-decoder-main(1)\rf-band-decoder-main\code\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="rf_banddecoder_g030.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+rf_banddecoder_g030.elf rf_banddecoder_g030.map: $(OBJS) $(USER_OBJS) Z:\GitHub\rf-band-decoder\code\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "rf_banddecoder_g030.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"Z:\GitHub\rf-band-decoder\code\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="rf_banddecoder_g030.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

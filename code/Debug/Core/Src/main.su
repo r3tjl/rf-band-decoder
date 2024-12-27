@@ -1,10 +1,10 @@
 ../Core/Src/main.c:78:6:SetBand	0	static
 ../Core/Src/main.c:94:6:ResetAllOuts	0	static
-../Core/Src/main.c:105:6:TestOuts	40	static
+../Core/Src/main.c:105:6:TestOuts	32	static
 ../Core/Src/main.c:128:6:HAL_TIM_PeriodElapsedCallback	40	static
 ../Core/Src/main.c:175:6:SetOuts	0	static
-../Core/Src/main.c:215:6:SetOutABCD	0	static
-../Core/Src/main.c:255:6:CheckPTT	8	static
-../Core/Src/main.c:329:6:SystemClock_Config	80	static,ignoring_inline_asm
-../Core/Src/main.c:272:5:main	160	static,ignoring_inline_asm
-../Core/Src/main.c:725:6:Error_Handler	0	static,ignoring_inline_asm
+../Core/Src/main.c:215:6:SetOutABCD	8	static
+../Core/Src/main.c:261:6:CheckPTT	8	static
+../Core/Src/main.c:335:6:SystemClock_Config	80	static,ignoring_inline_asm
+../Core/Src/main.c:278:5:main	160	static,ignoring_inline_asm
+../Core/Src/main.c:731:6:Error_Handler	0	static,ignoring_inline_asm
