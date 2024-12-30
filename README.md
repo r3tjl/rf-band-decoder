@@ -1,3 +1,7 @@
+Дополнение от r3tjl:
+В данной ветке расположен код, вместо простого включения диапазонов на Band pins 1-8
+формируется 4-пиновый код диапазона стандарта Yaesu ABCD, задействованы пины 1-4 соответстенно. Пины 5-8 не используются.
+
 # RF sampling Automatic Band Decoder 1-30 MHz
 
 This board provides automatic band switching capabilities for LPF and antenna switches for any radio rig. The main principle is to count the RF frequency during tuning and use the STM32G030 CPU as a frequency counter and a switch.
