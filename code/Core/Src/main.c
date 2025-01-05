@@ -96,10 +96,10 @@ void ResetAllOuts(){
 	LL_GPIO_ResetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
 	LL_GPIO_ResetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
 	LL_GPIO_ResetOutputPin(BAND4_GPIO_Port, BAND4_Pin);
-	//LL_GPIO_ResetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
-	//LL_GPIO_ResetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
-	//LL_GPIO_ResetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
-	//LL_GPIO_ResetOutputPin(BAND8_GPIO_Port, BAND8_Pin);
+	LL_GPIO_ResetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
+	LL_GPIO_ResetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
+	LL_GPIO_ResetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
+	LL_GPIO_ResetOutputPin(BAND8_GPIO_Port, BAND8_Pin);
 }
 
 void TestOuts(){
@@ -212,44 +212,58 @@ void SetOuts() {
 
 }
 
-void SetOutABCD() {             //исполльзуются только пины 1, 2, 3, 4 в качестве ABCD
+void SetOutABCD() {             //используются пины 1, 2, 3, 4 в качестве ABCD и дублируются 5, 6, 7, 8
 	if (flag_band == 1) {	//160
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
+		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
 	}
 	if (flag_band == 2) {	//80
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
+		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
 	}
 	if (flag_band == 3) {	//40
 		ResetAllOuts();
 		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
-		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND2_Pin);
+		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
+		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
+		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
 	}
 	if (flag_band == 4) {	//30
 		ResetAllOuts();
-		LL_GPIO_SetOutputPin(BAND4_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
 	}
 	if (flag_band == 5) {	//20
 		ResetAllOuts();
-		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND1_Pin);
-		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
+		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
+		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
 	}
 	if (flag_band == 6) {	//17
 		ResetAllOuts();
-		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND2_Pin);
-		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
+		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
+		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
 	}
 	if (flag_band == 7) {	//15
 		ResetAllOuts();
-		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND1_Pin);
-		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND2_Pin);
-		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
+		LL_GPIO_SetOutputPin(BAND2_GPIO_Port, BAND2_Pin);
+		LL_GPIO_SetOutputPin(BAND3_GPIO_Port, BAND3_Pin);
+		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
+		LL_GPIO_SetOutputPin(BAND6_GPIO_Port, BAND6_Pin);
+		LL_GPIO_SetOutputPin(BAND7_GPIO_Port, BAND7_Pin);
 	}
 	if (flag_band == 8) {	//12-11-10
 		ResetAllOuts();
-		LL_GPIO_SetOutputPin(BAND8_GPIO_Port, BAND1_Pin);
-		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND4_Pin);
+		LL_GPIO_SetOutputPin(BAND1_GPIO_Port, BAND1_Pin);
+		LL_GPIO_SetOutputPin(BAND4_GPIO_Port, BAND4_Pin);
+		LL_GPIO_SetOutputPin(BAND5_GPIO_Port, BAND5_Pin);
+		LL_GPIO_SetOutputPin(BAND8_GPIO_Port, BAND8_Pin);
 	}
 	if (flag_band == 0) {	//bypass
 		flag_ptt = 0;
